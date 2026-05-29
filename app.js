@@ -17,7 +17,9 @@ app.post('/register', (req, res) => {
     }
     const user = { id: nextId++, username, email, password };
     users.push(user);
-    res.status(201).json({ message: 'User registered successfully', user: { id: user.id, username, email } });
+    res.status(201).json({ 
+        message: 'User registered successfully', 
+        user: { id: user.id, username, email } });
 });
 
 app.post('/login', (req, res) => {
@@ -26,13 +28,14 @@ app.post('/login', (req, res) => {
     if (!user) {
         return res.status(401).json({ message: 'Invalid username or password' });
     }
-    res.status(200).json({ message: 'Login successful', userId: user.id });
+    res.status(200).json({ message: 'Login successful Please proceed', userId: user.id });
 });
 
 app.get('/search', (req, res) => {
     const { username } = req.query;
     if (!username) {
-        return res.status(400).json({ message: 'Provide username as query param, e.g. /search?username=john' });
+        return res.status(400).json({
+            message: 'Provide username as query param, e.g. /search?username=john' });
     }
     const results = users
         .filter(u => u.username.toLowerCase().includes(username.toLowerCase()))
@@ -49,8 +52,11 @@ app.put('/profile/:id', (req, res) => {
     const { email, password } = req.body;
     if (email) user.email = email;
     if (password) user.password = password;
-    res.status(200).json({ message: 'Profile updated', user: { id: user.id, username: user.username, email: user.email } });
+    res.status(200).json({ 
+        message: 'Profile updated', 
+        user: { id: user.id, username: user.username, email: user.email } });
 });
+
 app.delete('/user/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const index = users.findIndex(u => u.id === id);
